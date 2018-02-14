@@ -7,17 +7,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submitFormDisable: true,
-      ShowDivValue: '',
-      firstname: '',
-      lastname: '',
+      firstname: ' ',
+      lastname: ' ',
       userage: 0,
-      gender: '',
+      gender: ' ',
       pan: '',
       userbio: '',
+      submitFormDisable: true,
+      ShowDivValue: '',
       userInfo: []
     };
   }
+
   setIntruction = (value) => {
     this.setState({
       ShowDivValue: value
@@ -30,29 +31,21 @@ class App extends Component {
   }
 
   getFirstName = (e) => {
-    console.log(e.target.value);
     let wrkName = e.target.value;
-    //Validation
     let letters = /^[A-Za-z]+$/;
     if (wrkName.match(letters)) {
-      this.setState({
-        errorMsg: '',
-        firstname: e.target.value
-      });
-    } else {
+      this.setState({ errorMsg: '', firstname: wrkName });
+    }
+    else{
       this.setState({
         errorMsg: "Numbers are not allow, Please enter Character only"
       });
     }
-    console.log(this.state.firstname);
-    console.log(this.state.errorMsg);
   }
 
 
   getLastName = (e) => {
-    console.log(e.target.value);
     let wrkName = e.target.value;
-    //Validation
     let letters = /^[A-Za-z]+$/;
     if (wrkName.match(letters)) {
       this.setState({
@@ -64,89 +57,67 @@ class App extends Component {
         errorMsg: "Numbers are not allow, Please enter Character only"
       });
     }
-
-    console.log(this.state.lastname);
-  }
+}
 
   getAge = (e) => {
-    console.log(e.target.value);
     let num = e.target.value;
-    let charCode = e.target.charCode;
-    //Validation
-    if (charCode >= 48 && charCode <= 57) {
-      this.setState({
-        errorMsg: '',
-        userage: num
-      });
+  
+    if (isNaN(num)) {
+      this.setState({ errorMsg: 'Character are not allow, Please Enter only number' });
     }
     else {
-      this.setState({
-        errorMsg: 'Character are not allow, Please Enter only number'
-      });
+      this.setState({ errorMsg: '', userage: num });    
     }
-    console.log(this.state.userage);
   }
 
-  getGender = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      gender: e.target.value
-    });
-    console.log(this.state.gender);
-  }
+  getGender = (e) => { this.setState({ gender: e.target.value }); }
 
-  getflagpan = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      pan: e.target.value
-    });
-    console.log(this.state.pan);
+  getflagpan = (e) => { 
+    if(this.state.pan == 'yes'){
+      this.setState({ pan: 'no'});
+    }else{
+    this.setState({ pan: e.target.value });  
   }
+}
 
-  getUserBio = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      userbio: e.target.value
-    });
-    console.log(this.state.userbio);
-    if (this.state.firstname.length  && this.state.lastname.length && this.state.gender.length  && this.state.userbio.length)
-      {
-        this.setState({ submitFormDisable: false });
-      }
-}     
+  getUserBio = (e) => { this.setState({ userbio: e.target.value });
+   if (this.state.firstname.length && this.state.lastname.length && this.state.gender.length && this.state.userbio.length) 
+   { this.setState({ submitFormDisable: false }); }
+  }
 
   submitUserInfo = (e) => {
     e.preventDefault();
-      this.state.userInfo.push(
-        {
-          "firstname": this.firstname,
-          "lastname": this.lastname,
-          "userage": this.userage,
-          "gender":   this.gender,
-          "flagpan": this.flagpan,
-          "userBio": this.userBio
-        }
-      );
-console.log(this.state.userInfo);
-}
+    this.setState(
+      prev => ({
+        userInfo: prev.userInfo.concat({
+          firstname: this.state.firstname,
+          lastname: this.state.lastname,
+          userage: this.state.userage,
+          gender: this.state.gender,
+          pan: this.state.pan,
+          userbio: this.state.userbio
+        })
+      }))
+  }
 
   render() {
+    //console.log(this.state);
     return (
       <div className="App">
         <h1>Example Mania</h1>
         <div id="column">
           <div id="row1">
             <UserForm
-              userInfoForm   ={this.state.submitFormDisable}
+              userInfoForm={this.state.submitFormDisable}
               showIntruction={this.setIntruction}
               blankIntruction={this.setIntructiontoBlank}
-              firstNameValid ={this.getFirstName}
-              lastNameValid ={this.getLastName}
-              userAgeValid ={this.getAge}
-              getGender     ={this.getGender}
-              getflagpan  ={this.getflagpan}
-              getUserBio   ={this.getUserBio}
-              validFlag       ={this.state.validFlag}
+              firstNameValid={this.getFirstName}
+              lastNameValid={this.getLastName}
+              userAgeValid={this.getAge}
+              getGender={this.getGender}
+              getflagpan={this.getflagpan}
+              getUserBio={this.getUserBio}
+              validFlag={this.state.validFlag}
               onSubmitUserForm={this.submitUserInfo}
             >Please Fill the below form</UserForm>
           </div>
