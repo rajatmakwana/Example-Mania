@@ -1,0 +1,17 @@
+#parent {
+  display: flex;
+}
+#row1 {
+  width: 500px;
+  padding: 10px 10px 10px 10px;
+  float: left;
+  background: #f1f1f1;
+
+}
+#row2 {
+  float: left;
+  width: 500px;
+  padding-left: 10px;
+  margin-left: 10px;
+  background: #E5E1E1;
+}
